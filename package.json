@@ -8,7 +8,7 @@
     "gatsby"
   ],
   "scripts": {
-    "develop": "gatsby develop",
+    "develop": "gatsby develop -H 0.0.0.0 -p 8000",
     "start": "gatsby develop",
     "build": "gatsby build",
     "serve": "gatsby serve",
@@ -16,12 +16,14 @@
   },
   "dependencies": {
     "autoprefixer": "^10.4.17",
+    "axios": "^1.6.7",
     "gatsby": "^5.13.3",
     "gatsby-plugin-manifest": "^5.13.1",
     "gatsby-plugin-postcss": "^6.13.1",
     "postcss": "^8.4.35",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "tailwindcss": "^3.4.1"
+    "tailwindcss": "^3.4.1",
+    "tw-elements-react": "^1.0.0-alpha2"
   }
 }
