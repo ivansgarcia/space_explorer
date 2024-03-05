@@ -6,3 +6,8 @@
     font-family: 'Roboto';
     src: url(../fonts/Roboto/Roboto-Regular.ttf);
 }
+
+@font-face {
+    font-family: 'Anta';
+    src: url(../fonts/Anta/Anta-Regular.ttf);
+}

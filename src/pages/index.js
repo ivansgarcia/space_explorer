@@ -8,10 +8,10 @@ import '../../node_modules/tw-elements-react/dist/css/tw-elements-react.min.css'
 const IndexPage = () => {
   const [resultList, setResultList] = useState([]);
   return (
-    <div className="min-h-screen w-full">
+    <div className="min-h-screen w-full bg-[url('../images/space.jpg')] bg-cover">
       <Header />
       <Navigator setResultList={setResultList} />
-      <Results resultList={resultList} />
+      <Results resultList={resultList} setResultList={setResultList} />
     </div>
   )
 }
