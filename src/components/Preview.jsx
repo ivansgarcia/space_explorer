@@ -15,7 +15,7 @@ import {
     TEModalFooter,
 } from 'tw-elements-react';
 import { useRef } from 'react';
-import ReactPlayer from "react-player";
+import ReactPlayer from 'react-player';
 
 const Preview = ({ result, setShowViewer, filterByTag }) => {
     const [expanded, setExpanded] = useState(false);
@@ -59,6 +59,7 @@ const Preview = ({ result, setShowViewer, filterByTag }) => {
     };
 
     const showTag = (tag) => {
+        setLink('');
         setExpanded(false);
         filterByTag(tag);
     };
@@ -67,18 +68,18 @@ const Preview = ({ result, setShowViewer, filterByTag }) => {
         <>
             <div
                 onClick={expand}
-                className="w-full h-64 p-4 flex flex-col items-center gap-2 border border-blue-500 rounded-lg text-white"
+                className="w-full relative h-64 p-4 flex flex-col justify-around items-center border border-blue-500 rounded-lg text-white"
             >
-                <figure className="w-full relative max-h-40 flex justify-center flex-1">
+                <figure className="w-full max-h-32 flex-1">
                     <img
-                        className="absolute left-0 w-8 p-1 m-2 rounded-full bg-white/70"
+                        className="absolute left-2 top-2 w-8 p-1 rounded-full bg-white/70"
                         src={mediaIcon[mediaType]}
                         alt="media type"
                     />
                     <img
-                        className={`h-full ${
-                            mediaType === 'audio' && 'w-16'
-                        } object-contain`}
+                        className={`${
+                            mediaType === 'audio' ? 'w-16' : 'w-auto'
+                        } object-contain rounded-lg h-full mx-auto`}
                         loading="lazy"
                         src={mediaType === 'audio' ? speakerIcon : previewImage}
                         alt="preview"
@@ -87,18 +88,17 @@ const Preview = ({ result, setShowViewer, filterByTag }) => {
                 <p className="text-[10px] text-right self-end text-blue-500">
                     {date.slice(0, 4)}
                 </p>
-                <p className="self-start">{title ?? ''}</p>
+                <p className="self-start h-auto max-h-24 overflow-hidden">{title ?? ''}</p>
             </div>
 
-            <TEModal show={expanded} setShow={setShowViewer}>
-                {/* <div className="m-6"> */}
+            <TEModal show={expanded} setShow={setShowViewer} className="p-2 ">
                 <TEModalDialog
                     centered
-                    style={{ backgroundColor: '#000000' }}
+                    style={{ backgroundColor: '#00000075', padding: 0, width: '100%' }}
                     size="fullscreen"
                 >
                     <TEModalContent>
-                        <div className="flex flex-col justify-around items-center m-4 gap-4">
+                        <div className="max-h-screen flex flex-col justify-around items-center m-4 gap-4">
                             <button className="self-end" onClick={expand}>
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -116,35 +116,24 @@ const Preview = ({ result, setShowViewer, filterByTag }) => {
                                 </svg>
                             </button>
                             <div className="w-full flex flex-col items-center gap-4">
-                                {mediaType === 'image' && <img src={link} />}
+                                {mediaType === 'image' && <img className="max-h-80 rounded-lg" src={link} />}
                                 {mediaType === 'audio' && (
                                     <audio src={link} autoPlay controls />
                                 )}
                                 {mediaType === 'video' && (
-                                    <div className="w-full p-4 ">
-                                        {/* <iframe
-                                            className="w-full h-full rounded-lg"
-                                            src={link}
-                                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                                            webkitallowfullscreen="true"
-                                            mozallowfullscreen="true"
-                                            allowFullScreen
-                                            
-                                        /> */}
-                                        {/* <video autoPlay controls muted>
-                                            <source
-                                                src={link}
-                                                type="video/mp4"
-                                            />
-                                        </video> */}
-                                        <ReactPlayer url={link} controls playing style={{width: '100%'}} />
-                                    </div>
+                                    <ReactPlayer
+                                        url={link}
+                                        controls
+                                        playing
+                                        width={'100%'}
+                                        height={'auto'}
+                                    />
                                 )}
-                                <h2 className="font-bold my-2 self-start">
+                                <h2 className="font-bold mt-2 self-start h">
                                     {title}
                                 </h2>
                                 {mediaType === 'video' && (
-                                    <p className="text-sm max-h-64 overflow-scroll">
+                                    <p className="text-sm max-h-48 overflow-auto pr-2">
                                         {description}
                                     </p>
                                 )}
@@ -165,7 +154,6 @@ const Preview = ({ result, setShowViewer, filterByTag }) => {
                         </div>
                     </TEModalContent>
                 </TEModalDialog>
-                {/* </div> */}
             </TEModal>
         </>
     );

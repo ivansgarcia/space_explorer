@@ -4,16 +4,18 @@ import findResults from "../controllers/searchContoller";
 import { TEInput, TERipple } from "tw-elements-react";
 import savedSearch from '../utils/moon.json';
 
-const Navigator = ({ setResultList }) => {
+const Navigator = ({ setResultList, setIsLoading }) => {
     const [searchValue, setSearchValue] = useState('');
     const [resultPage, setResultPage] = useState(1);
 
     const search = async (params) => {
+        setIsLoading(true);
         console.log('searching for: ', params);
         const newList = await findResults(params).then(r => ((r.data.collection.items)));
         const shuffledList = newList.sort(() => Math.random() - 0.5);
         // console.log(newList);
         setResultList(shuffledList);
+        setIsLoading(false);
         // setResultList(savedSearch.collection.items);
     };
 

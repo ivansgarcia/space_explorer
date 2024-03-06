@@ -4,7 +4,7 @@ const url = 'https://images-api.nasa.gov/search';
 
 const findResults = async (searchParams) => {
     try {
-        return await axios.get(url, { params: { q: searchParams, page_size: 100, page: 1 } });
+        return await axios.get(url, { params: { q: searchParams, page_size: 250 } });
     } catch (error) {
         console.log(error);
     }
@@ -21,7 +21,7 @@ export const getURLFromJson = async (json) => {
 
 export const findResultsByTag = async (tag) => {
     try {
-        return await axios.get(url, { params: { keywords: tag, page_size: 25 } })
+        return await axios.get(url, { params: { keywords: tag, page_size: 250 } })
     } catch (error) {
         console.log(error);
     }
