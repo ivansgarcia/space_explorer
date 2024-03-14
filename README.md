@@ -1,49 +1,21 @@
-<p align="center">
-  <a href="https://www.gatsbyjs.com/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter">
-    <img alt="Gatsby" src="https://www.gatsbyjs.com/Gatsby-Monogram.svg" width="60" />
-  </a>
-</p>
-<h1 align="center">
-  Gatsby Minimal Starter
-</h1>
+# SPACE EXPLORER APP
 
-## 🚀 Quick start
+This is a development exercise for showing multimedia content of the Nasa Image and Video Library.
 
-1.  **Create a Gatsby site.**
+No commercial pruposes.
 
-    Use the Gatsby CLI to create a new site, specifying the minimal starter.
+It connects with the Nama I&V Library API and shows this content formatted in screen.
 
-    ```shell
-    # create a new Gatsby site using the minimal starter
-    npm init gatsby
-    ```
+Created using the React framework GatsbyJS with the Material Tailwind package.
+Icons by Freepik.com
 
-2.  **Start developing.**
+### Resources
+- [GatsbyJS] (https://www.gatsbyjs.com/)
+- [Material Tailwind] (https://www.material-tailwind.com/)
+- [Freepik Icons] (https://www.freepik.com)
 
-    Navigate into your new site’s directory and start it up.
+It has implementation like PWA (Progresive Web App) so you can install it in your device.
 
-    ```shell
-    cd my-gatsby-site/
-    npm run develop
-    ```
+This app not collects or sends any type of user info, just saves your last visited images or videos urls in your localstorage.
 
-3.  **Open the code and start customizing!**
-
-    Your site is now running at http://localhost:8000!
-
-    Edit `src/pages/index.js` to see your site update in real-time!
-
-4.  **Learn more**
-
-    - [Documentation](https://www.gatsbyjs.com/docs/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
-    - [Tutorials](https://www.gatsbyjs.com/docs/tutorial/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
-    - [Guides](https://www.gatsbyjs.com/docs/how-to/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
-    - [API Reference](https://www.gatsbyjs.com/docs/api-reference/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
-    - [Plugin Library](https://www.gatsbyjs.com/plugins?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
-    - [Cheat Sheet](https://www.gatsbyjs.com/docs/cheat-sheet/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
-
-## 🚀 Quick start (Netlify)
-
-Deploy this starter with one click on [Netlify](https://app.netlify.com/signup):
-
-[<img src="https://www.netlify.com/img/deploy/button.svg" alt="Deploy to Netlify" />](https://app.netlify.com/start/deploy?repository=https://github.com/gatsbyjs/gatsby-starter-minimal)
+#### Created by Iván Salinas García

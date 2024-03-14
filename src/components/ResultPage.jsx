@@ -1,13 +1,20 @@
 import React from 'react';
 import Preview from './Preview';
 
-const ResultPage = ({ list, filterByTag, showViewer, setShowViewer }) => {
+const ResultPage = ({
+    list,
+    filterByTag,
+    showViewer,
+    setShowViewer,
+    setLoading,
+}) => {
     return (
-        <div className="flex flex-col items-center gap-2">
+        <div className="flex w-full flex-col items-center gap-2 sm:flex-row sm:flex-wrap sm:justify-center">
             {list.map((result, index) => (
                 <Preview
                     filterByTag={filterByTag}
-                    setShowViewer={() => setShowViewer(!showViewer)}
+                    setShowViewer={setShowViewer}
+                    setLoading={setLoading}
                     key={index}
                     result={result}
                 />

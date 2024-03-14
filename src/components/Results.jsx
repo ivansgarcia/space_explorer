@@ -1,25 +1,28 @@
 import React from 'react';
-import Preview from './Preview';
 import { useState } from 'react';
-import { TESelect } from 'tw-elements-react';
 import imageIcon from '../images/image.svg';
 import videoIcon from '../images/video.svg';
 import audioIcon from '../images/audio.svg';
 import { findResultsByTag } from '../controllers/searchContoller';
-import { useEffect } from 'react';
 import ResultPage from './ResultPage';
+import { Button, Option, Select } from '@material-tailwind/react';
 
-const Results = ({ resultList, setResultList }) => {
-    const [showViewer, setShowViewer] = useState(false);
-    const [mediaTypeShow, setMediaTypeShow] = useState([
-        'image',
-        'video',
-        'audio',
-    ]);
+const Results = ({
+    resultList,
+    setResultList,
+    setLoading,
+    showViewer,
+    setShowViewer,
+}) => {
+    const [mediaTypeShow, setMediaTypeShow] = useState('all');
 
     const [pages, setPages] = useState([1]);
 
     const filterData = [
+        {
+            text: 'All',
+            value: 'all',
+        },
         {
             text: 'Images',
             value: 'image',
@@ -37,44 +40,50 @@ const Results = ({ resultList, setResultList }) => {
         },
     ];
 
-    const filteredList = resultList.filter((result) =>
-        mediaTypeShow.includes(result.data[0].media_type)
-    );
-
-    // console.log('resultList: ', resultList);
-    // console.log('filteredList: ', filteredList);
-    console.log(pages);
+    const filteredList =
+        resultList !== 'NOT_FOUND' && mediaTypeShow !== 'all'
+            ? resultList.filter(
+                (result) => result.data[0].media_type === mediaTypeShow
+            )
+            : resultList;
 
     const filterByTag = async (tag) => {
         const newList = await findResultsByTag(tag).then(
             (r) => r.data.collection.items
         );
-        // console.log(newList);
-        // const orderedList = newList.sort((a, b) => new Date(a.data[0].date_created) - new Date(b.data[0].date_created))
         setResultList(newList);
         setPages([1]);
         window.scrollTo(0, 0);
-
+        setLoading(false);
     };
 
     return (
-        <main className="w-full p-4">
-            <div className="w-full flex justify-between items-center">   
-            </div>
-            {filteredList.length ? (
-                <div className="flex flex-col items-center pb-24 gap-2">
-                <TESelect
-                    className="self-start mb-6 text-white"
-                    data={filterData}
-                    value={mediaTypeShow}
-                    multiple
-                    label="Show"
-                    size="sm"
-                    onValueChange={(e) => {
-                        const newValue = e.map((el) => el.value);
-                        setMediaTypeShow(newValue);
-                    }}
-                />
+        <main className="w-full px-2 sm:px-16">
+            <div className="flex w-full items-center justify-between"></div>
+            {filteredList !== 'NOT_FOUND' ? (
+                <div className="flex w-full flex-col items-center gap-2 pb-24">
+                    <div className="self-start">
+                        <div className="filter-selector mb-6">
+                            <Select
+                                color="blue"
+                                className="self-start text-white"
+                                value={mediaTypeShow}
+                                label="Show"
+                                defaultValue={mediaTypeShow}
+                                onChange={(val) => setMediaTypeShow(val)}
+                            >
+                                {filterData.map((opt, index) => (
+                                    <Option
+                                        className="bg-transparent text-white hover:bg-gray-900 hover:text-white"
+                                        key={index}
+                                        value={opt.value}
+                                    >
+                                        {opt.text}
+                                    </Option>
+                                ))}
+                            </Select>
+                        </div>
+                    </div>
                     {pages.map((page, index) => (
                         <ResultPage
                             key={index}
@@ -85,19 +94,24 @@ const Results = ({ resultList, setResultList }) => {
                             filterByTag={filterByTag}
                             showViewer={showViewer}
                             setShowViewer={setShowViewer}
+                            setLoading={setLoading}
                         />
                     ))}
-                    {pages.length  * 20 <= resultList.length && (
-                        <button
-                            onClick={() => setPages([...pages, pages.length + 1])}
-                            className="text-white bg-blue-500 rounded-2xl px-4 py-1 my-8 mx-auto"
+                    {pages.length * 20 <= filteredList.length && (
+                        <Button
+                            variant="filled"
+                            color="blue"
+                            onClick={() =>
+                                setPages([...pages, pages.length + 1])
+                            }
+                            className="m-6 text-base text-white"
                         >
                             Show More
-                        </button>
+                        </Button>
                     )}
                 </div>
             ) : (
-                <p>No results</p>
+                <p className="text-center text-xl text-white my-16">No results found...</p>
             )}
         </main>
     );

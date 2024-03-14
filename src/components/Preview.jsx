@@ -1,32 +1,24 @@
 import React from 'react';
 import { useState } from 'react';
-import speakerIcon from '../images/speaker.png';
+import speakerIcon from '../images/audio.png';
 import { getURLFromJson } from '../controllers/searchContoller';
 import imageIcon from '../images/image.svg';
 import videoIcon from '../images/video.svg';
 import audioIcon from '../images/audio.svg';
-import {
-    TERipple,
-    TEModal,
-    TEModalDialog,
-    TEModalContent,
-    TEModalHeader,
-    TEModalBody,
-    TEModalFooter,
-} from 'tw-elements-react';
-import { useRef } from 'react';
-import ReactPlayer from 'react-player';
+import { saveTag } from '../controllers/saveTagController';
+import { saveViewElement } from '../controllers/saveElement';
+import View from './View';
 
-const Preview = ({ result, setShowViewer, filterByTag }) => {
+const Preview = ({ result, setShowViewer, filterByTag, setLoading }) => {
     const [expanded, setExpanded] = useState(false);
     const { data, href, links } = result;
     const previewImage = links && links[0] ? links[0].href : null;
     const date = data[0] ? data[0].date_created : 'not found';
     const title = data[0] ? data[0].title : 'not found';
     const mediaType = data[0] ? data[0].media_type : null;
-    const description = data[0] ? data[0].description : null;
 
     const [link, setLink] = useState('');
+    const [fullscreenLink, setFullscreenLink] = useState('');
 
     const mediaIcon = {
         image: imageIcon,
@@ -39,17 +31,24 @@ const Preview = ({ result, setShowViewer, filterByTag }) => {
             setLink('');
             setExpanded(false);
         } else {
+            saveViewElement(result);
             const links = await getURLFromJson(href).then(
                 (response) => response.data
             );
             if (mediaType === 'video') {
                 const videoLink = links
-                    .find((l) => l.endsWith('orig.mp4'))
+                    .find(
+                        (l) => l.endsWith('orig.mp4') || l.endsWith('orig.mov')
+                    )
                     .replaceAll(' ', '%20');
                 setLink(videoLink);
             } else if (mediaType === 'image') {
-                const imageLink = links[0];
+                const imageLink =
+                    links.find((l) => l.endsWith('small.jpg')) ??
+                    links.find((l) => l.endsWith('.jpg'));
+                const fullscreenLink = links.find((l) => l.endsWith('.jpg'));
                 setLink(imageLink);
+                setFullscreenLink(fullscreenLink);
             } else if (mediaType === 'audio') {
                 const audioLink = links[0];
                 setLink(audioLink);
@@ -59,6 +58,9 @@ const Preview = ({ result, setShowViewer, filterByTag }) => {
     };
 
     const showTag = (tag) => {
+        window.scrollTo(0, 0);
+        saveTag(tag);
+        setLoading(true);
         setLink('');
         setExpanded(false);
         filterByTag(tag);
@@ -66,95 +68,43 @@ const Preview = ({ result, setShowViewer, filterByTag }) => {
 
     return (
         <>
-            <div
+            <button
                 onClick={expand}
-                className="w-full relative h-64 p-4 flex flex-col justify-around items-center border border-blue-500 rounded-lg text-white"
+                className="relative flex h-72 w-full cursor-pointer flex-col items-center justify-center rounded-lg border bg-gradient-to-br from-light-black to-blue-gray-dark p-4 text-white transition border-blue-600/30 hover:brightness-125 sm:h-auto sm:w-auto sm:rounded hover:border-white/50"
             >
-                <figure className="w-full max-h-32 flex-1">
+                <figure className="h-48 sm:h-64">
                     <img
-                        className="absolute left-2 top-2 w-8 p-1 rounded-full bg-white/70"
+                        className="absolute left-3 top-3 w-8 rounded-full bg-white/70 p-1"
                         src={mediaIcon[mediaType]}
                         alt="media type"
                     />
                     <img
                         className={`${
-                            mediaType === 'audio' ? 'w-16' : 'w-auto'
-                        } object-contain rounded-lg h-full mx-auto`}
+                            mediaType === 'audio' && 'p-16'
+                        } mx-auto h-full w-auto rounded-lg`}
                         loading="lazy"
                         src={mediaType === 'audio' ? speakerIcon : previewImage}
                         alt="preview"
                     />
                 </figure>
-                <p className="text-[10px] text-right self-end text-blue-500">
-                    {date.slice(0, 4)}
-                </p>
-                <p className="self-start h-auto max-h-24 overflow-hidden">{title ?? ''}</p>
-            </div>
-
-            <TEModal show={expanded} setShow={setShowViewer} className="p-2 ">
-                <TEModalDialog
-                    centered
-                    style={{ backgroundColor: '#00000075', padding: 0, width: '100%' }}
-                    size="fullscreen"
-                >
-                    <TEModalContent>
-                        <div className="max-h-screen flex flex-col justify-around items-center m-4 gap-4">
-                            <button className="self-end" onClick={expand}>
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    strokeWidth={1.5}
-                                    stroke="currentColor"
-                                    className="w-6 h-6"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        d="M6 18 18 6M6 6l12 12"
-                                    />
-                                </svg>
-                            </button>
-                            <div className="w-full flex flex-col items-center gap-4">
-                                {mediaType === 'image' && <img className="max-h-80 rounded-lg" src={link} />}
-                                {mediaType === 'audio' && (
-                                    <audio src={link} autoPlay controls />
-                                )}
-                                {mediaType === 'video' && (
-                                    <ReactPlayer
-                                        url={link}
-                                        controls
-                                        playing
-                                        width={'100%'}
-                                        height={'auto'}
-                                    />
-                                )}
-                                <h2 className="font-bold mt-2 self-start h">
-                                    {title}
-                                </h2>
-                                {mediaType === 'video' && (
-                                    <p className="text-sm max-h-48 overflow-auto pr-2">
-                                        {description}
-                                    </p>
-                                )}
-                                <ul className="flex gap-2 items-center flex-wrap text-sm">
-                                    tags:
-                                    {data[0].keywords?.map((tag, index) => (
-                                        <li key={index}>
-                                            <button
-                                                onClick={() => showTag(tag)}
-                                                className="rounded-xl bg-slate-200 px-2"
-                                            >
-                                                {tag}
-                                            </button>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        </div>
-                    </TEModalContent>
-                </TEModalDialog>
-            </TEModal>
+                <div className="flex w-full justify-between gap-4 pt-4">
+                    <p className="h-auto max-h-24 text-left">
+                        {title?.length > 40 ? title.slice(0, 40) : title}
+                    </p>
+                    <p className="text-right text-sm  text-blue-500">
+                        {date.slice(0, 4)}
+                    </p>
+                </div>
+            </button>
+            <View
+                expand={expand}
+                showTag={showTag}
+                data={data}
+                link={link}
+                fullscreenLink={fullscreenLink}
+                expanded={expanded}
+                setShowViewer={setShowViewer}
+            />
         </>
     );
 };
