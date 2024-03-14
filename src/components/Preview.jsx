@@ -1,7 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
 import speakerIcon from '../images/audio.png';
-import { getURLFromJson } from '../controllers/searchContoller';
 import imageIcon from '../images/image.svg';
 import videoIcon from '../images/video.svg';
 import audioIcon from '../images/audio.svg';
@@ -17,42 +16,17 @@ const Preview = ({ result, setShowViewer, filterByTag, setLoading }) => {
     const title = data[0] ? data[0].title : 'not found';
     const mediaType = data[0] ? data[0].media_type : null;
 
-    const [link, setLink] = useState('');
-    const [fullscreenLink, setFullscreenLink] = useState('');
-
     const mediaIcon = {
         image: imageIcon,
         video: videoIcon,
         audio: audioIcon,
     };
 
-    const expand = async () => {
+    const expand = () => {
         if (expanded) {
-            setLink('');
             setExpanded(false);
         } else {
             saveViewElement(result);
-            const links = await getURLFromJson(href).then(
-                (response) => response.data
-            );
-            if (mediaType === 'video') {
-                const videoLink = links
-                    .find(
-                        (l) => l.endsWith('orig.mp4') || l.endsWith('orig.mov')
-                    )
-                    .replaceAll(' ', '%20');
-                setLink(videoLink);
-            } else if (mediaType === 'image') {
-                const imageLink =
-                    links.find((l) => l.endsWith('small.jpg')) ??
-                    links.find((l) => l.endsWith('.jpg'));
-                const fullscreenLink = links.find((l) => l.endsWith('.jpg'));
-                setLink(imageLink);
-                setFullscreenLink(fullscreenLink);
-            } else if (mediaType === 'audio') {
-                const audioLink = links[0];
-                setLink(audioLink);
-            }
             setExpanded(true);
         }
     };
@@ -61,7 +35,6 @@ const Preview = ({ result, setShowViewer, filterByTag, setLoading }) => {
         window.scrollTo(0, 0);
         saveTag(tag);
         setLoading(true);
-        setLink('');
         setExpanded(false);
         filterByTag(tag);
     };
@@ -70,7 +43,7 @@ const Preview = ({ result, setShowViewer, filterByTag, setLoading }) => {
         <>
             <button
                 onClick={expand}
-                className="relative flex h-72 w-full cursor-pointer flex-col items-center justify-center rounded-lg border bg-gradient-to-br from-light-black to-blue-gray-dark p-4 text-white transition border-blue-600/30 hover:brightness-125 sm:h-auto sm:w-auto sm:rounded hover:border-white/50"
+                className="relative flex h-72 w-full cursor-pointer flex-col items-center justify-center rounded-lg border border-blue-600/30 bg-gradient-to-br from-light-black to-blue-gray-dark p-4 text-white transition hover:border-white/50 hover:brightness-125 sm:h-auto sm:w-auto sm:rounded"
             >
                 <figure className="h-48 sm:h-64">
                     <img
@@ -89,7 +62,9 @@ const Preview = ({ result, setShowViewer, filterByTag, setLoading }) => {
                 </figure>
                 <div className="flex w-full justify-between gap-4 pt-4">
                     <p className="h-auto max-h-24 text-left">
-                        {title?.length > 40 ? title.slice(0, 40) : title}
+                        {title?.length > 80
+                            ? title.slice(0, 80) + '...'
+                            : title}
                     </p>
                     <p className="text-right text-sm  text-blue-500">
                         {date.slice(0, 4)}
@@ -100,8 +75,7 @@ const Preview = ({ result, setShowViewer, filterByTag, setLoading }) => {
                 expand={expand}
                 showTag={showTag}
                 data={data}
-                link={link}
-                fullscreenLink={fullscreenLink}
+                href={href}
                 expanded={expanded}
                 setShowViewer={setShowViewer}
             />
