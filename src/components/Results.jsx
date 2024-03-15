@@ -13,6 +13,7 @@ const Results = ({
     setLoading,
     showViewer,
     setShowViewer,
+    setSearchValue
 }) => {
     const [mediaTypeShow, setMediaTypeShow] = useState('all');
 
@@ -48,6 +49,7 @@ const Results = ({
             : resultList;
 
     const filterByTag = async (tag) => {
+        setSearchValue(tag)
         const newList = await findResultsByTag(tag).then(
             (r) => r.data.collection.items
         );

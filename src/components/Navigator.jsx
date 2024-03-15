@@ -1,11 +1,8 @@
 import React from 'react';
-import { useState } from 'react';
 import findResults from '../controllers/searchContoller';
-// import savedSearch from '../utils/moon.json';
 import { Button, Input } from '@material-tailwind/react';
 
-const Navigator = ({ setResultList, setLoading }) => {
-    const [searchValue, setSearchValue] = useState('');
+const Navigator = ({ setResultList, setLoading, searchValue, setSearchValue }) => {
 
     const search = async (params) => {
         setLoading(true);
@@ -23,7 +20,7 @@ const Navigator = ({ setResultList, setLoading }) => {
         <nav className="flex w-full items-center justify-center p-4 pt-28 sm:pt-4">
             <div className="flex items-center justify-center gap-2 sm:w-[65%] sm:gap-6">
                 <Input
-                    aria-label="search bar"
+                    id="search-bar"
                     className="!text-base text-white placeholder-white sm:p-7 sm:!text-2xl"
                     value={searchValue}
                     onKeyDown={e => e.key === 'Enter' && searchValue && search(searchValue) && e.target.blur()}

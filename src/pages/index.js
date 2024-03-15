@@ -11,21 +11,23 @@ const IndexPage = () => {
     const [resultList, setResultList] = useState(null);
     const [loading, setLoading] = useState(false);
     const [showViewer, setShowViewer] = useState(false);
+    const [searchValue, setSearchValue] = useState('');
 
     const date = new Date().getFullYear();
 
     return (
         <div
-            className={`flex min-h-screen w-full flex-col gap-6 bg-black  font-open-sans`}
+            className={`flex min-h-screen w-full flex-col gap-6 bg-light-black font-open-sans`}
         >
             <Header setResultList={setResultList} />
-            <Navigator setResultList={setResultList} setLoading={setLoading} />
+            <Navigator setResultList={setResultList} setLoading={setLoading} searchValue={searchValue} setSearchValue={setSearchValue} />
             {loading && <Loading />}
             {resultList && !loading ? (
                 <Results
                     resultList={resultList}
                     setLoading={setLoading}
                     setResultList={setResultList}
+                    setSearchValue={setSearchValue}
                 />
             ) : (
                 !loading && (
@@ -37,7 +39,7 @@ const IndexPage = () => {
                     />
                 )
             )}
-            <div className="text-white -mb-6 text-xs self-end mx-2">icons provided by <span className="text-blue-400" >Freepik</span></div>
+            <div className="text-white -mb-4 text-xs mt-auto self-end mx-2">icons provided by <span className="text-blue-400" >Freepik</span></div>
             <footer className="flex items-center justify-between bg-gradient-to-b from-black/60 to-blue-gray-900/60 px-4 pb-3 pt-4 text-[10px] text-white sm:px-8 sm:pb-4 sm:pt-8 sm:text-base">
                 <span className="text-white">{date}</span>
                 <div className="flex items-center sm:gap-1">

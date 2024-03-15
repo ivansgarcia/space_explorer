@@ -9,7 +9,7 @@ const Header = ({ setResultList }) => {
     };
 
     return (
-        <header className="fixed z-10 flex w-full flex-col items-center justify-center gap-6 bg-gradient-to-t from-black to-blue-gray-800 py-2 shadow-md shadow-blue-gray-900 sm:static sm:flex-row sm:justify-between sm:px-6 sm:py-8">
+        <header className="fixed z-10 flex w-full flex-col items-center justify-center gap-6 bg-gradient-to-t from-black to-blue-gray-800 py-2 shadow-md shadow-blue-gray-900 sm:static sm:flex-row sm:justify-between sm:px-6 sm:py-6">
             <button
                 onClick={goToHome}
                 className="group flex items-center justify-center gap-2 sm:gap-6"

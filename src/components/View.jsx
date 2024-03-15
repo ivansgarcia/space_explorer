@@ -12,40 +12,47 @@ import closeIcon from '../images/close.png';
 import { useEffect } from 'react';
 import { getURLFromJson } from '../controllers/searchContoller';
 
-const View = ({ expand, showTag, data, href, expanded, setShowViewer }) => {
+const View = ({
+    expand,
+    showTag,
+    data,
+    href,
+    expanded,
+    setShowViewer,
+    previewImage,
+}) => {
     const description = data[0] ? data[0].description : null;
     const title = data[0] ? data[0].title : 'not found';
     const mediaType = data[0] ? data[0].media_type : null;
     const location = data[0] ? data[0].location : null;
 
     const [fullscreen, setFullscreen] = useState(false);
-    const [link, setLink] = useState('');
+    const [link, setLink] = useState(null);
     const [fullscreenLink, setFullscreenLink] = useState('');
 
     useEffect(() => {
+        const getLinks = async () => {
+            const links = await getURLFromJson(href).then(
+                (response) => response.data
+            );
+            if (mediaType === 'video') {
+                const videoLink = links
+                    .find((l) => l.endsWith('orig.mp4') || l.endsWith('orig.mov'))
+                    .replaceAll(' ', '%20');
+                setLink(videoLink);
+            } else if (mediaType === 'image') {
+                const imageLink =
+                    links.find((l) => l.endsWith('small.jpg')) ??
+                    links.find((l) => l.endsWith('.jpg'));
+                setFullscreenLink(links.find((l) => l.endsWith('.jpg')));
+                setLink(imageLink);
+            } else if (mediaType === 'audio') {
+                const audioLink = links[0];
+                setLink(audioLink);
+            }
+        };
         getLinks();
-    }, []);
-
-    const getLinks = async () => {
-        const links = await getURLFromJson(href).then(
-            (response) => response.data
-        );
-        if (mediaType === 'video') {
-            const videoLink = links
-                .find((l) => l.endsWith('orig.mp4') || l.endsWith('orig.mov'))
-                .replaceAll(' ', '%20');
-            setLink(videoLink);
-        } else if (mediaType === 'image') {
-            const imageLink =
-                links.find((l) => l.endsWith('small.jpg')) ??
-                links.find((l) => l.endsWith('.jpg'));
-            setFullscreenLink(links.find((l) => l.endsWith('.jpg')));
-            setLink(imageLink);
-        } else if (mediaType === 'audio') {
-            const audioLink = links[0];
-            setLink(audioLink);
-        }
-    };
+    }, [href, mediaType]);
 
     return (
         <Dialog
@@ -55,7 +62,7 @@ const View = ({ expand, showTag, data, href, expanded, setShowViewer }) => {
             className="max-h-screen bg-blue-800 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-gray-900 to-gray-900 p-2 transition-transform duration-500"
         >
             <DialogHeader className="flex justify-between gap-4 p-2 font-open-sans sm:p-4">
-                <h2 className="mt-2 self-start text-lg font-bold leading-5 text-white sm:text-xl">
+                <h2 className="mt-2 self-start text-base font-bold leading-5 text-white sm:text-xl">
                     {title}
                 </h2>
                 <Button className="min-w-8 p-2" variant="text" onClick={expand}>
@@ -69,13 +76,13 @@ const View = ({ expand, showTag, data, href, expanded, setShowViewer }) => {
                 </Button>
             </DialogHeader>
             <DialogBody className="p-2 sm:p-4">
-                <div className="flex w-full flex-col items-center gap-4 font-open-sans text-white">
+                <div className="flex w-full flex-col items-center font-open-sans text-white">
                     {mediaType === 'image' && (
                         <>
                             <button onClick={() => setFullscreen(true)}>
                                 <img
-                                    className={`${fullscreen ? 'fixed left-0 top-0 h-screen w-screen cursor-default bg-black object-contain' : 'max-h-64 min-h-44 cursor-zoom-in rounded-lg hover:brightness-125 sm:max-h-96'}`}
-                                    src={`${fullscreen ? fullscreenLink : link}`}
+                                    className={`${fullscreen ? 'fixed left-0 top-0 h-screen w-screen cursor-default bg-black object-contain' : 'max-h-80 min-h-40 cursor-zoom-in rounded-lg hover:brightness-125 sm:max-h-96'}`}
+                                    src={`${fullscreen ? fullscreenLink : link ?? previewImage}`}
                                     alt={
                                         (data[0]?.keywords &&
                                             data[0].keywords[0]) ??
@@ -114,17 +121,17 @@ const View = ({ expand, showTag, data, href, expanded, setShowViewer }) => {
                         />
                     )}
                     {mediaType !== 'audio' && description && (
-                        <p className="view-description max-h-64 w-full overflow-y-auto overflow-x-hidden px-2 text-sm sm:max-h-96 sm:text-base">
+                        <p className="my-4 view-description max-h-60 w-full overflow-y-auto overflow-x-hidden px-2 text-sm sm:text-base">
                             {description.split('<')[0]}
                         </p>
                     )}
                     {location && (
-                        <p className="text-sm">Location: {location}</p>
+                        <p className="text-blue-500 text-sm font-semibold">Location: {location}</p>
                     )}
                 </div>
             </DialogBody>
-            <DialogFooter>
-                {data[0].keywords && (
+            {data[0].keywords && (
+                <DialogFooter className="pt-0 pb-4">
                     <ul className="flex w-full flex-wrap items-center justify-center gap-2 text-sm text-white sm:text-base">
                         tags:
                         {data[0].keywords?.slice(0, 6).map((tag, index) => (
@@ -142,8 +149,8 @@ const View = ({ expand, showTag, data, href, expanded, setShowViewer }) => {
                             </li>
                         ))}
                     </ul>
-                )}
-            </DialogFooter>
+                </DialogFooter>
+            )}
         </Dialog>
     );
 };

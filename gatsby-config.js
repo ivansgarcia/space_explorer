@@ -25,4 +25,7 @@ module.exports = {
         },
         'gatsby-plugin-offline',
     ],
+    flags: {
+        DEV_SSR: true,
+    },
 };

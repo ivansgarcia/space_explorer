@@ -54,7 +54,7 @@ const Preview = ({ result, setShowViewer, filterByTag, setLoading }) => {
                     <img
                         className={`${
                             mediaType === 'audio' && 'p-16'
-                        } mx-auto h-full w-auto rounded-lg`}
+                        } mx-auto h-full object-contain w-auto rounded-lg`}
                         loading="lazy"
                         src={mediaType === 'audio' ? speakerIcon : previewImage}
                         alt="preview"
@@ -71,14 +71,17 @@ const Preview = ({ result, setShowViewer, filterByTag, setLoading }) => {
                     </p>
                 </div>
             </button>
-            <View
-                expand={expand}
-                showTag={showTag}
-                data={data}
-                href={href}
-                expanded={expanded}
-                setShowViewer={setShowViewer}
-            />
+            {expanded && (
+                <View
+                    previewImage={previewImage}
+                    expand={expand}
+                    showTag={showTag}
+                    data={data}
+                    href={href}
+                    expanded={expanded}
+                    setShowViewer={setShowViewer}
+                />
+            )}
         </>
     );
 };
