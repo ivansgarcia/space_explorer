@@ -6,6 +6,7 @@ import Results from '../components/Results';
 import Welcome from '../components/Welcome';
 import Loading from '../components/Loading';
 import nasaLogo from '../images/NASA_logo.svg';
+import { useEffect } from "react";
 
 const IndexPage = () => {
     const [resultList, setResultList] = useState(null);
@@ -14,6 +15,12 @@ const IndexPage = () => {
     const [searchValue, setSearchValue] = useState('');
 
     const date = new Date().getFullYear();
+
+    useEffect(() => {
+        return () => {
+            process.env.NODE_ENV === "production" && caches.delete();
+        };
+    }, []);
 
     return (
         <div
@@ -32,6 +39,7 @@ const IndexPage = () => {
             ) : (
                 !loading && (
                     <Welcome
+                        setSearchValue={setSearchValue}
                         showViewer={showViewer}
                         setShowViewer={setShowViewer}
                         setResultList={setResultList}

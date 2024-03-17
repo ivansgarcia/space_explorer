@@ -8,7 +8,7 @@ import multimediaIcon from '../images/multimedia.png';
 import tagsIcon from '../images/tags.png';
 import infoIcon from '../images/info.png';
 
-const Welcome = ({ setResultList, setLoading, showViewer, setShowViewer }) => {
+const Welcome = ({ setResultList, setLoading, showViewer, setShowViewer, setSearchValue }) => {
     const [savedState, setSavedState] = useState({});
 
     useEffect(() => {
@@ -18,6 +18,7 @@ const Welcome = ({ setResultList, setLoading, showViewer, setShowViewer }) => {
     }, []);
 
     const searchTag = async (tag) => {
+        setSearchValue(tag);
         setLoading(true);
         await findResultsByTag(tag)
             .then((r) => setResultList(r.data.collection.items))
@@ -40,15 +41,15 @@ const Welcome = ({ setResultList, setLoading, showViewer, setShowViewer }) => {
                 </h3>
             </section>
             <section className="flex flex-wrap justify-around gap-8 sm:px-32">
-                <div className="flex items-center gap-4 font-bold text-blue-600">
+                <div className="p-2 flex items-center gap-4 font-bold text-blue-600">
                     <img className="" src={multimediaIcon} alt="multimedia" width={60} />
                     <p className="w-20">Images, Videos & Audios</p>
                 </div>
-                <div className="flex items-center gap-4 font-bold text-blue-600">
+                <div className="p-2 flex items-center gap-4 font-bold text-blue-600">
                     <img src={tagsIcon} alt="tags" width={60} />
                     <p className="w-20">Saves last viewed tags</p>
                 </div>
-                <div className="flex items-center gap-4 font-bold text-blue-600">
+                <div className="p-2 flex items-center gap-4 font-bold text-blue-600">
                     <img src={infoIcon} alt="info" width={60} />
                     <p className="w-20">
                         This app is just a development exercise

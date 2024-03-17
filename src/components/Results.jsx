@@ -49,7 +49,7 @@ const Results = ({
             : resultList;
 
     const filterByTag = async (tag) => {
-        setSearchValue(tag)
+        setSearchValue(tag);
         const newList = await findResultsByTag(tag).then(
             (r) => r.data.collection.items
         );
