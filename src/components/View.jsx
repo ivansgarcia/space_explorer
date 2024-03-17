@@ -37,7 +37,9 @@ const View = ({
             );
             if (mediaType === 'video') {
                 const videoLink = links
-                    .find((l) => l.endsWith('orig.mp4') || l.endsWith('orig.mov'))
+                    .find(
+                        (l) => l.endsWith('orig.mp4') || l.endsWith('orig.mov')
+                    )
                     .replaceAll(' ', '%20');
                 setLink(videoLink);
             } else if (mediaType === 'image') {
@@ -121,17 +123,19 @@ const View = ({
                         />
                     )}
                     {mediaType !== 'audio' && description && (
-                        <p className="my-4 view-description max-h-60 w-full overflow-y-auto overflow-x-hidden px-2 text-sm sm:text-base">
+                        <p className="view-description my-4 max-h-60 w-full overflow-y-auto overflow-x-hidden px-2 text-sm sm:text-base">
                             {description.split('<')[0]}
                         </p>
                     )}
                     {location && (
-                        <p className="text-blue-500 text-sm font-semibold">Location: {location}</p>
+                        <p className="text-sm font-semibold text-blue-500">
+                            Location: {location}
+                        </p>
                     )}
                 </div>
             </DialogBody>
             {data[0].keywords && (
-                <DialogFooter className="pt-0 pb-4">
+                <DialogFooter className="pb-4 pt-0">
                     <ul className="flex w-full flex-wrap items-center justify-center gap-2 text-sm text-white sm:text-base">
                         tags:
                         {data[0].keywords?.slice(0, 6).map((tag, index) => (

@@ -50,13 +50,14 @@ const Preview = ({ result, setShowViewer, filterByTag, setLoading }) => {
                         className="absolute left-3 top-3 w-8 rounded-full bg-white/70 p-1"
                         src={mediaIcon[mediaType]}
                         alt="media type"
+                        loading="lazy"
                     />
                     <img
                         className={`${
                             mediaType === 'audio' && 'p-16'
                         } mx-auto h-full object-contain w-auto rounded-lg`}
                         loading="lazy"
-                        src={mediaType === 'audio' ? speakerIcon : previewImage}
+                        src={mediaType === 'audio' ? speakerIcon : previewImage + '?ver=' + new Date().getTime()}
                         alt="preview"
                     />
                 </figure>

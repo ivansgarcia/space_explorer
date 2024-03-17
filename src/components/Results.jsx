@@ -13,7 +13,7 @@ const Results = ({
     setLoading,
     showViewer,
     setShowViewer,
-    setSearchValue
+    setSearchValue,
 }) => {
     const [mediaTypeShow, setMediaTypeShow] = useState('all');
 
@@ -44,8 +44,8 @@ const Results = ({
     const filteredList =
         resultList !== 'NOT_FOUND' && mediaTypeShow !== 'all'
             ? resultList.filter(
-                (result) => result.data[0].media_type === mediaTypeShow
-            )
+                  (result) => result.data[0].media_type === mediaTypeShow
+              )
             : resultList;
 
     const filterByTag = async (tag) => {
@@ -113,7 +113,9 @@ const Results = ({
                     )}
                 </div>
             ) : (
-                <p className="text-center text-xl text-white my-16">No results found...</p>
+                <p className="my-16 text-center text-xl text-white">
+                    No results found...
+                </p>
             )}
         </main>
     );
