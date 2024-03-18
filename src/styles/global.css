@@ -22,7 +22,7 @@ html {
 }
 
 .filter-selector ul {
-    background-color: #000000;
+    background-color: #181818;
     color: white;
     border-color: rgb(30 136 229);
 }
@@ -75,4 +75,16 @@ li[aria-selected='true'] {
 
 video {
     max-height: 400px;
+}
+
+/* Landscape screen on mobiles */
+div.grid.place-items-center.fixed {
+    height: auto ;
+    position: static ;
+    min-height: 100vh;
+}
+
+div[role=dialog] {
+    max-height: none ;
+    height: auto ;
 }

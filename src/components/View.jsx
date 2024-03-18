@@ -83,7 +83,7 @@ const View = ({
                         <>
                             <button onClick={() => setFullscreen(true)}>
                                 <img
-                                    className={`${fullscreen ? 'fixed left-0 top-0 h-screen w-screen cursor-default bg-black object-contain' : 'max-h-80 min-h-40 cursor-zoom-in rounded-lg hover:brightness-125 sm:max-h-96'}`}
+                                    className={`${fullscreen ? 'fixed left-0 top-0 h-screen w-full cursor-default overflow-hidden bg-black object-contain' : 'max-h-72 min-h-40 cursor-zoom-in rounded-lg hover:brightness-125 sm:max-h-96'}`}
                                     src={`${fullscreen ? fullscreenLink : link ?? previewImage}`}
                                     alt={
                                         (data[0]?.keywords &&
@@ -123,7 +123,7 @@ const View = ({
                         />
                     )}
                     {mediaType !== 'audio' && description && (
-                        <p className="view-description my-4 max-h-60 w-full overflow-y-auto overflow-x-hidden px-2 text-sm sm:text-base">
+                        <p className="view-description my-4 max-h-48 w-full overflow-y-auto overflow-x-hidden px-2 text-sm sm:text-base">
                             {description.split('<')[0]}
                         </p>
                     )}
@@ -146,8 +146,8 @@ const View = ({
                                     onClick={() => showTag(tag)}
                                     className="p-1.5 text-xs tracking-widest"
                                 >
-                                    {tag.length > 20
-                                        ? tag.slice(0, 20) + '...'
+                                    {tag.length > 12
+                                        ? tag.slice(0, 12) + '...'
                                         : tag}
                                 </Button>
                             </li>

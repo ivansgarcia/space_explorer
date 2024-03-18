@@ -2,8 +2,12 @@ import React from 'react';
 import findResults from '../controllers/searchContoller';
 import { Button, Input } from '@material-tailwind/react';
 
-const Navigator = ({ setResultList, setLoading, searchValue, setSearchValue }) => {
-
+const Navigator = ({
+    setResultList,
+    setLoading,
+    searchValue,
+    setSearchValue,
+}) => {
     const search = async (params) => {
         setLoading(true);
         const newList = await findResults(params).then(
@@ -21,9 +25,14 @@ const Navigator = ({ setResultList, setLoading, searchValue, setSearchValue }) =
             <div className="flex items-center justify-center gap-2 sm:w-[65%] sm:gap-6">
                 <Input
                     id="search-bar"
-                    className="!text-base text-white placeholder-white sm:p-7 sm:!text-2xl"
+                    className="!text-base text-white sm:p-7 sm:!text-2xl"
                     value={searchValue}
-                    onKeyDown={e => e.key === 'Enter' && searchValue && search(searchValue) && e.target.blur()}
+                    onKeyDown={(e) =>
+                        e.key === 'Enter' &&
+                        searchValue &&
+                        search(searchValue) &&
+                        e.target.blur()
+                    }
                     onChange={(e) => setSearchValue(e.target.value)}
                     label="Search for..."
                     color="blue"

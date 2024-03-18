@@ -18,7 +18,7 @@ const Header = ({ setResultList }) => {
                     className="w-8 rounded-full border border-blue-600/50 bg-gray-900 p-1 transition group-hover:border-blue-200 sm:w-14 sm:border-2"
                     src={logo}
                     alt="logo"
-                    width={40}
+                    width={56}
                 />
                 <h1 className="bg-gradient-to-r from-white to-blue-700 bg-clip-text font-anta text-2xl font-bold tracking-wide text-transparent transition group-hover:text-blue-200 sm:text-5xl">
                     Space Explorer

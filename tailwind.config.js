@@ -28,7 +28,8 @@ module.exports = withMT({
         }
       },
       animation: {
-        'appear': 'appear 0.5s ease-out'
+        'appear': 'appear 0.5s ease-out',
+        'pulse-fast': 'pulse 1s ease-in-out infinite'
       }
     },
   },
