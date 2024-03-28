@@ -32,6 +32,7 @@ const View = ({
 
     const convertHttps = (url) => {
         return ('https' + url.slice(4));
+    }
 
     useEffect(() => {
         const getLinks = async () => {
