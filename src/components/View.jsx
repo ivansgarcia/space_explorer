@@ -50,8 +50,8 @@ const View = ({
                 const imageLink =
                     links.find((l) => l.endsWith('small.jpg')) ??
                     links.find((l) => l.endsWith('.jpg'));
-                setFullscreenLink(convertHttps(links.find((l) => l.endsWith('.jpg')));
-                setLink(convertHttps(imageLink);
+                setFullscreenLink(convertHttps(links.find((l) => l.endsWith('.jpg'))));
+                setLink(convertHttps(imageLink));
             } else if (mediaType === 'audio') {
                 const audioLink = links[0];
                 setLink(convertHttps(audioLink));
