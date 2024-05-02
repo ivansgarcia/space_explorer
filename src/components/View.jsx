@@ -30,6 +30,10 @@ const View = ({
     const [link, setLink] = useState(null);
     const [fullscreenLink, setFullscreenLink] = useState('');
 
+    const convertHttps = (url) => {
+        return ('https' + url.slice(4));
+    }
+
     useEffect(() => {
         const getLinks = async () => {
             const links = await getURLFromJson(href).then(
@@ -41,16 +45,16 @@ const View = ({
                         (l) => l.endsWith('orig.mp4') || l.endsWith('orig.mov')
                     )
                     .replaceAll(' ', '%20');
-                setLink(videoLink);
+                setLink(convertHttps(videoLink));
             } else if (mediaType === 'image') {
                 const imageLink =
                     links.find((l) => l.endsWith('small.jpg')) ??
                     links.find((l) => l.endsWith('.jpg'));
-                setFullscreenLink(links.find((l) => l.endsWith('.jpg')));
-                setLink(imageLink);
+                setFullscreenLink(convertHttps(links.find((l) => l.endsWith('.jpg'))));
+                setLink(convertHttps(imageLink));
             } else if (mediaType === 'audio') {
                 const audioLink = links[0];
-                setLink(audioLink);
+                setLink(convertHttps(audioLink));
             }
         };
         getLinks();
