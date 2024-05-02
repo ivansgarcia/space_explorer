@@ -61,7 +61,7 @@ const View = ({
             open={expanded}
             handler={setShowViewer}
             size="lg"
-            className="max-h-screen bg-blue-800 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-gray-900 to-gray-900 p-2 transition-transform duration-500"
+            className="max-h-screen bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-gray-900 to-gray-900 transition-transform duration-500"
         >
             <DialogHeader className="flex justify-between gap-4 p-2 font-open-sans sm:p-4">
                 <h2 className="mt-2 self-start text-base font-bold leading-5 text-white sm:text-xl">
@@ -83,7 +83,7 @@ const View = ({
                         <>
                             <button onClick={() => setFullscreen(true)}>
                                 <img
-                                    className={`${fullscreen ? 'fixed left-0 top-0 h-screen w-full cursor-default overflow-hidden bg-black object-contain' : 'max-h-72 min-h-40 cursor-zoom-in rounded-lg hover:brightness-125 sm:max-h-96'}`}
+                                    className={`${fullscreen ? 'fixed left-0 top-0 h-screen w-full cursor-default overflow-hidden bg-black object-contain' : 'max-h-72 min-h-40 cursor-zoom-in rounded-lg hover:brightness-125'}`}
                                     src={`${fullscreen ? fullscreenLink : link ?? previewImage}`}
                                     alt={
                                         (data[0]?.keywords &&
@@ -123,7 +123,7 @@ const View = ({
                         />
                     )}
                     {mediaType !== 'audio' && description && (
-                        <p className="view-description my-4 max-h-48 w-full overflow-y-auto overflow-x-hidden px-2 text-sm sm:text-base">
+                        <p className="view-description my-4 max-h-44 w-full overflow-y-auto overflow-x-hidden px-2 text-sm sm:text-base">
                             {description.split('<')[0]}
                         </p>
                     )}

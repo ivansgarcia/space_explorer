@@ -88,3 +88,7 @@ div[role=dialog] {
     max-height: none ;
     height: auto ;
 }
+
+.grid.place-items-center.fixed {
+    width: 100%;
+}
